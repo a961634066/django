@@ -53,10 +53,10 @@ class CacheView(APIView):
 
     def get(self, request):
         # 设置缓存
-        cache.set()
-        cache.set("test", {"value": 1}, 100)
+        cache.set("test", {"value": 1},100)
         message = "有数据"
-
+        s = request.session._session_cache
+        print("函数中session:{}".format(s))
         return JsonResponse({"data": message}, safe=False, json_dumps_params={'ensure_ascii': False})
 
         # if cache.has_key("test"):
