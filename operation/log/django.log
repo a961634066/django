@@ -1,0 +1,9 @@
+2019-12-09 10:57:19,609 [django.server:124] [basehttp:log_message] [INFO] "GET /index/log HTTP/1.1" 301 0
+2019-12-09 10:57:20,125 [django.server:124] [basehttp:log_message] [ERROR] "GET /index/log/ HTTP/1.1" 500 19567
+2019-12-09 10:57:20,265 [django.server:124] [basehttp:log_message] [WARNING] "GET /favicon.ico HTTP/1.1" 404 2072
+2019-12-09 10:57:53,802 [django.server:124] [basehttp:log_message] [INFO] "GET /index/log/ HTTP/1.1" 200 31
+2019-12-09 10:59:30,559 [django.server:124] [basehttp:log_message] [INFO] "GET /index/log/ HTTP/1.1" 200 2
+2019-12-09 10:59:54,032 [django.server:124] [basehttp:log_message] [INFO] "GET /index/log/ HTTP/1.1" 200 2
+2019-12-09 11:00:27,105 [django.server:124] [basehttp:log_message] [INFO] "GET /index/log/ HTTP/1.1" 200 2
+2019-12-09 11:26:01,338 [django.server:124] [basehttp:log_message] [INFO] "GET /index/log/ HTTP/1.1" 200 2
+2019-12-09 11:26:32,311 [django.server:124] [basehttp:log_message] [INFO] "GET /index/log/?pwd=123456 HTTP/1.1" 200 2

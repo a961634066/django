@@ -1,0 +1,4 @@
+2019-12-09 11:00:27,102 [pruduct:71] [views:get] [INFO] 输出日志信息：appss.pruduct.views
+2019-12-09 11:26:01,338 [pruduct:74] [views:get] [INFO] 输出加密密码：!cnr6Kotvk7LNczGte11wjGNT5HmC71emOSgwrT1J
+2019-12-09 11:26:32,285 [pruduct:74] [views:get] [INFO] 输出加密密码：pbkdf2_sha256$36000$51Fwc5cmRJri$2a4AjpvOJ3HPhnpfsA+KoZhoQamaet+L9MzkORb4K4Y=
+2019-12-09 11:26:32,309 [pruduct:77] [views:get] [INFO] 校验成功
