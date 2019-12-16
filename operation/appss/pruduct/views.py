@@ -17,8 +17,6 @@ from rest_framework.views import APIView
 from appss.pruduct.models import Test
 from appss.pruduct.serializers import TestSerializers
 
-# reload(sys) # Python2.5 初始化后删除了 sys.setdefaultencoding 方法，我们需要重新载入
-# sys.setdefaultencoding('utf-8')
 
 log = logging.getLogger("pruduct")
 

@@ -123,7 +123,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+WAF_STATIC_ROOT = os.path.join(BASE_DIR, 'waf_static')
 
 # rest_framework配置
 REST_FRAMEWORK = {
