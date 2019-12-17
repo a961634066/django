@@ -16,12 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from appss.pruduct.views import TaskView, CacheView, LogView
+from appss.pruduct.views import TaskView, CacheView, LogView, ModelsView
 
 test_patterns = [
     url(r'test/$', TaskView.as_view()),
     url(r'cache/$', CacheView.as_view()),
     url(r'log/$', LogView.as_view()),
+    url(r'models/$', ModelsView.as_view()),
 ]
 
 

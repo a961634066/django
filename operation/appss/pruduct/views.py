@@ -14,7 +14,7 @@ from rest_framework.response import Response
 
 from rest_framework.views import APIView
 
-from appss.pruduct.models import Test
+from appss.pruduct.models import Test, Teacher, Student
 from appss.pruduct.serializers import TestSerializers
 
 
@@ -76,7 +76,17 @@ class LogView(APIView):
             log.info("校验成功")
         return JsonResponse(data={})
 
+
 class CeleryView(APIView):
 
     def get(self, request):
         pass
+
+
+class ModelsView(APIView):
+
+    def get(self, request):
+        student = Student.objects.create(name="123", sex="女", number="456123")
+        techer = Teacher.objects.create(techer_name="www")
+
+        return JsonResponse(data={})

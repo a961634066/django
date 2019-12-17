@@ -27,5 +27,24 @@ class Test(models.Model):
         ordering = "id",     # 根据id排序
 
 
+class People(models.Model):
+    peoples = models.CharField(max_length=150)
+    card = models.CharField(max_length=150, unique=True)
 
 
+class Student(models.Model):
+    name = models.CharField(max_length=150)
+    sex = models.CharField(max_length=150)
+    number = models.CharField(max_length=150)
+
+
+class Subject(models.Model):
+    stu = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="student")
+    kechengming = models.CharField(max_length=150)
+    shichang = models.CharField(max_length=150)
+
+
+class Teacher(models.Model):
+    techer_name = models.CharField(max_length=150)
+    # 最好自己定义第三章表
+    stu = models.ManyToManyField(Student)

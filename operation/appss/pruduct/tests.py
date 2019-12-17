@@ -57,3 +57,11 @@ print(datetime.datetime.now().strftime("%Y-%m-%d %H"))
 timestamp = 1576203586
 print(datetime.datetime.fromtimestamp(timestamp))
 
+import socket
+
+print(socket.socket)
+
+# 提示作用
+def hello(name:str) -> str:
+    return "hello" + name
+
