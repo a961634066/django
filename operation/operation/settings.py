@@ -13,7 +13,12 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import sys
+from datetime import timedelta
 
+import djcelery
+
+
+djcelery.setup_loader()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -40,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'appss.pruduct',
-    "rest_framework"
+    "djcelery"
 ]
 
 MIDDLEWARE = [
@@ -217,3 +222,80 @@ LOGGING = {
         }
     }
 }
+
+
+# celery配置
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/3' # Broker配置，使用Redis作为消息中间件
+
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/3' # BACKEND配置，这里使用redis
+
+#使用django orm 作为结果存储
+
+# pip install django-celery-results
+# INSTALLED_APPS = (
+#     ...,
+#     'django_celery_results',
+# )
+# CELERY_RESULT_BACKEND = 'django-db'
+
+
+CELERY_RESULT_SERIALIZER = 'json' # 结果序列化方案
+CELERY_TIMEZONE='Asia/Shanghai'
+
+CELERY_IMPORTS = (
+    'appss.pruduct.tasks',
+)
+
+# CELERY_IMPORTS：是导入目标任务文件
+#
+# CELERYBEAT_SCHEDULER：使用了 django-celery 默认的数据库调度模型,任务执行周期都被存在默认指定的 orm 数据库中．
+#
+# CELERYBEAT_SCHEDULE：设置定时的时间配置， 可以精确到秒，分钟，小时，天，周等。
+
+CELERYD_CONCURRENCY = 4   # 创建四个工人
+
+
+
+
+CELERYBEAT_SCHEDULE = {    #定时器策略
+    #定时任务一：　每隔30s运行一次
+    # u'测试定时器1': {
+    #     "task": "art.tasks.tsend_email",
+    #     #"schedule": crontab(minute='*/2'),  # or 'schedule':   timedelta(seconds=3),
+    #     "schedule":timedelta(seconds=30),
+    #     "args": (),
+    # },
+}
+
+PERIOD_TASKS = []
+POLICIES_TASKS = ["appss.pruduct.tasks.add",
+                  "appss.pruduct.tasks.just_print"]
+
+CELERY_QUEUES = {
+    "period_tasks": {
+        "exchange": "period_tasks",
+        "exchange_type": "direct",
+        "routing_key": "period_tasks"
+    },
+    "delay": {
+        "exchange": "delay",
+        "exchange_type": "direct",
+        "routing_key": "delay"
+    },
+    "default": {
+        "exchange": "default",
+        "exchange_type": "direct",
+        "routing_key": "default"
+    }
+}
+
+class MyRouter(object):
+    def route_for_task(self, task, args=None, kwargs=None):
+        if task in PERIOD_TASKS:
+            return {"queue": "period_tasks"}
+        elif task in POLICIES_TASKS:
+            return {"queue": "delay"}
+        else:
+            return {"queue": "default"}
+
+CELERY_ROUTES = (MyRouter(), )
