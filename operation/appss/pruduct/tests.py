@@ -13,6 +13,7 @@ from django.test import TestCase
 import time
 
 #当前时间
+from operation.utils import SocketObject
 
 print(time.time())
 
@@ -57,11 +58,20 @@ print(datetime.datetime.now().strftime("%Y-%m-%d %H"))
 timestamp = 1576203586
 print(datetime.datetime.fromtimestamp(timestamp))
 
-import socket
-
-print(socket.socket)
 
 # 提示作用
 def hello(name:str) -> str:
     return "hello" + name
 
+
+try:
+    obj = SocketObject()
+    s = obj.TcpServer()
+    while 1:
+        socket, address = s.accept()
+        print("客户端的地址：{}".format(address))
+        message = socket.recv(1024)
+        print("接收到的信息是:{}".format(message))
+
+finally:
+    socket.close()
