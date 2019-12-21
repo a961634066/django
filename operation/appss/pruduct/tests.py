@@ -64,14 +64,4 @@ def hello(name:str) -> str:
     return "hello" + name
 
 
-try:
-    obj = SocketObject()
-    s = obj.TcpServer()
-    while 1:
-        socket, address = s.accept()
-        print("客户端的地址：{}".format(address))
-        message = socket.recv(1024)
-        print("接收到的信息是:{}".format(message))
 
-finally:
-    socket.close()

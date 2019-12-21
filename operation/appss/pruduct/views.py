@@ -90,3 +90,10 @@ class ModelsView(APIView):
         techer = Teacher.objects.create(techer_name="www")
 
         return JsonResponse(data={})
+
+# 验证码
+class VerifierView(APIView):
+
+    def get(self, request):
+
+        return JsonResponse(data={})
