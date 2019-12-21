@@ -1,0 +1,9 @@
+{
+  "host": "192.168.0.1",
+  "port": 3306,
+  "scheme": "http",
+  "version": "v1",
+  "username": "admin",
+  "pwd": 123456,
+  "status": 0
+}

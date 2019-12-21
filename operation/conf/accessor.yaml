@@ -1,0 +1,9 @@
+public:
+    host: 127.0.0.1
+    port: 8000
+    id: 1
+    status: 0
+    scheme: http
+    version: v1
+    username: admin
+    pwd: 12345678
