@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-
-
+import abc
 from copy import copy
 
+import six as six
 from django.test import TestCase
 
 # Create your tests here.
@@ -52,7 +52,8 @@ print(datetime.datetime.now().timestamp())
 print(datetime.datetime.now() - datetime.timedelta(days=1))
 
 # datetime对象自定义格式
-print(datetime.datetime.now().strftime("%Y-%m-%d %H"))
+print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))
+print("\n")
 
 # 戳转datetime对象
 timestamp = 1576203586
@@ -64,4 +65,53 @@ def hello(name:str) -> str:
     return "hello" + name
 
 
+# 继承
+class Base(object):
 
+    def __init__(self, four):
+        self.first = 1
+        self.two = 2
+        self.__three = 3
+        self.four = four
+
+    def __run(self):
+        print("running...")
+        print(self.__three)
+
+    def get_run(self):
+        return self.__run()
+
+
+class Children(Base):
+
+    def __init__(self, four):
+        Base.__init__(self, four)
+
+a = Base(4)
+getattr(a,"get_run")()
+setattr(a,"two",6)
+print(a.two)
+print(time.time())
+print(datetime.datetime.now().timestamp())
+
+# 抽象类
+# @six.add_metaclass(abc.ABCMeta)
+class Meta(metaclass=abc.ABCMeta):
+
+    @abc.abstractmethod
+    def func1(self):
+        pass
+
+    def func2(self):
+        return ""
+
+
+class Chil(Meta):
+
+    def func3(self):
+        print("func3")
+
+    def func1(self):
+        pass
+
+Chil().func3()
