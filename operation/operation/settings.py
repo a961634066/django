@@ -299,3 +299,14 @@ class MyRouter(object):
             return {"queue": "default"}
 
 CELERY_ROUTES = (MyRouter(), )
+
+
+# 邮箱配置
+# EMAIL_HOST = "smtp.qq.com"    # 如果是 163 改成 smtp.163.com
+# EMAIL_PORT = 465     # ssl，端口号,  非 25
+# EMAIL_HOST_USER = "961634066@qq.com"        # 发送者的邮箱
+# EMAIL_HOST_PASSWORD = '***'                 #发送者的邮箱授权
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# EMAIL_USE_SSL = True   #使用ssl
+# EMAIL_USE_TLS = False   #安全传输协议
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
