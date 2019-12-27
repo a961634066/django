@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import abc
+import json
 from copy import copy
 
 import six as six
@@ -115,3 +116,38 @@ class Chil(Meta):
         pass
 
 Chil().func3()
+
+
+import smtplib
+from email.mime.text import MIMEText
+
+msg_from = '961634066@qq.com'  # 发送方邮箱
+passwd = 'svjwbnnqmxvtbcga'  # 填入发送方邮箱的授权码(填入自己的授权码，相当于邮箱密码)
+msg_to = ['961634066@qq.com','2635881792@qq.com']  # 收件人邮箱
+
+subject = "测试邮件发送"  # 主题
+content = "邮件内容，我是邮件内容，哈哈哈"  # 内容
+# 生成一个MIMEText对象（还有一些其它参数）
+# _text_:邮件内容
+msg = MIMEText(content)
+# 放入邮件主题
+msg['Subject'] = subject
+# 也可以这样传参
+# msg['Subject'] = Header(subject, 'utf-8')
+# 放入发件人
+msg['From'] = msg_from
+# 放入收件人
+msg['To'] = json.dumps(msg_to)
+
+try:
+    # 通过ssl方式发送，服务器地址，端口
+    s = smtplib.SMTP_SSL("smtp.qq.com", 465)
+    # 登录到邮箱
+    s.login(msg_from, passwd)
+    # 发送邮件：发送方，收件方，要发送的消息
+    s.sendmail(msg_from, msg_to, msg.as_string())
+    print('成功')
+except Exception as e:
+    print(e)
+finally:
+    s.quit()
