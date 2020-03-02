@@ -152,7 +152,7 @@ class Utils(object):
     @staticmethod
     def captcha():
         # 网络问题，captcha包未下载，先注释
-        # from captcha.image import ImageCaptcha
+        from captcha.image import ImageCaptcha
 
         random_lower = chr(random.randint(97, 122))
         random_upper = chr(random.randint(65, 90))
@@ -161,11 +161,23 @@ class Utils(object):
         chars = ''
         for i in range(4):
             chars += random.choice([random_lower, random_upper, random_num])
-        # image = ImageCaptcha().generate_image(chars)
-        #
-        # return image.show()
+        image = ImageCaptcha().generate_image(chars)
+        image.save("./%s.jpg" % chars)   # 保存
+        # return image.show()   # 展示出来
 
+class Email():
+    def send_mail(self):
+        import yagmail  # 第三方库
+
+        # 链接邮箱服务器
+        yag = yagmail.SMTP(user="sender@126.com", password="126邮箱授权码", host='smtp.126.com')
+        # 邮箱正文
+        contents = ['This is the body, and here is just text http://somedomain/image.png',
+                    'You can find an audio file attached.', '/local/path/song.mp3']
+        # 发送邮件
+        yag.send('receiver@qq.com','subject', contents)
 
 if __name__ == '__main__':
     resp = TestAccessor().test()
+    Utils.captcha()
 
