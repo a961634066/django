@@ -15,8 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework.documentation import include_docs_urls
+from rest_framework.routers import DefaultRouter
 
-from appss.pruduct.views import TaskView, CacheView, LogView, ModelsView
+from appss.pruduct.views import TaskView, CacheView, LogView, ModelsView, Students, StudentsMixinGenerics, PdfView, \
+    ExcelView
+
+from appss.pruduct.views import StudentsViewsets
+
+router = DefaultRouter()
+
+# 配置students的url
+router.register(r'students', StudentsViewsets)
 
 test_patterns = [
     url(r'test/$', TaskView.as_view()),
@@ -26,8 +36,23 @@ test_patterns = [
 ]
 
 
+genric_patterns = [
+    url(r'goods/$', Students.as_view(), name="goods-list"),
+    url(r'pdf/$', PdfView.as_view(), name="goods-list"),
+    url(r'excel/$', ExcelView.as_view(), name="goods-list"),
+]
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^index/',include(test_patterns)),
 
+    # genricAPIView的路由
+    url(r'^gen/', include(genric_patterns)),
+
+    # drf文档，安装coreapi包，$符号一定不要
+    url(r'^doc/', include_docs_urls(title='bbb')),
+
+
+    # router的配置
+    url(r'^', include(router.urls))
 ]

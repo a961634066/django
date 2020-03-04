@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'appss.pruduct',
-    "djcelery"
+    "djcelery",
+    "rest_framework"
 ]
 
 MIDDLEWARE = [
@@ -129,7 +130,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-WAF_STATIC_ROOT = os.path.join(BASE_DIR, 'waf_static')
 
 # rest_framework配置
 REST_FRAMEWORK = {

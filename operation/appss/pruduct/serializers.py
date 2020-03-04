@@ -3,7 +3,7 @@ import time
 
 from rest_framework import serializers
 
-from appss.pruduct.models import Test
+from appss.pruduct.models import Test, Student
 
 """
 read_only:验证时不需要验证，但是返回时可以返回，此字段model中有
@@ -49,3 +49,14 @@ class TestSerializers(serializers.ModelSerializer):
             raise serializers.ValidationError("年龄非法")
         return age
 
+
+class StudetSerializer(serializers.ModelSerializer):
+
+    name = serializers.CharField(max_length=150)
+    sex = serializers.CharField(max_length=150)
+
+    # 有外键时，不显示为id，显示外键信息，需定义外键serializers，即ForKeySerializer，以下为举例
+    # for_key = ForKeySerializer()
+    class Meta:
+        model = Student
+        fields = "__all__"
