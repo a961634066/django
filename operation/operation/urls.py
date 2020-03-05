@@ -56,3 +56,6 @@ urlpatterns = [
     # router的配置
     url(r'^', include(router.urls))
 ]
+
+# 两种方式，include或下面
+# urlpatterns += router.urls

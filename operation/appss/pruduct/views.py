@@ -7,6 +7,7 @@ import logging
 import sys
 from io import BytesIO
 
+import redis
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.cache import cache
 from django.http import JsonResponse, HttpResponse, FileResponse
@@ -51,17 +52,27 @@ class TaskView(APIView):
 class CacheView(APIView):
 
     def get(self, request):
-        # 设置缓存
+        # 设置缓存两种方式
         cache.set("test", {"value": 1},100)
+        cache.delete("test")
         message = "有数据"
         s = request.session._session_cache
         print("函数中session:{}".format(s))
-        return JsonResponse({"data": message}, safe=False, json_dumps_params={'ensure_ascii': False})
 
-        # if cache.has_key("test"):
-        #     return JsonResponse({"data": cache.get("test")})
-        # else:
-        #     return JsonResponse({})
+        # 第二种，直接连接redis
+        # decode_responses：返回值是否解码
+        redis_cli = redis.Redis(db=2, decode_responses=True)
+        redis_cli.set('name', 'xiaoming',100)
+        # 如果 key 已经存在并且是一个字符串， APPEND 命令将指定的 value 追加到该 key 原来值（value）的末尾。
+        redis_cli.append('name', 'xiaohua')
+        print(redis_cli.exists('name'))   # 0/1
+        redis_cli.get('name')
+        # redis_cli.delete('name')
+        # return JsonResponse({"data": message}, safe=False, json_dumps_params={'ensure_ascii': False})
+        if cache.has_key("test"):
+            return JsonResponse({"data": cache.get("test")})
+        else:
+            return JsonResponse({})
 
 
 class LogView(APIView):
