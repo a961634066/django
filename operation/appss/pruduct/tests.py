@@ -59,6 +59,9 @@ print("\n")
 # 戳转datetime对象
 timestamp = 1576203586
 print(datetime.datetime.fromtimestamp(timestamp))
+# 以下等同
+print("11111,",datetime.datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S.%f"))
+print("11111,",datetime.datetime.strftime(datetime.datetime.fromtimestamp(timestamp),"%Y-%m-%d %H:%M:%S.%f"))
 
 
 # 提示作用

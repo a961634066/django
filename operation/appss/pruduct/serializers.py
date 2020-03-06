@@ -53,10 +53,18 @@ class TestSerializers(serializers.ModelSerializer):
 class StudetSerializer(serializers.ModelSerializer):
 
     name = serializers.CharField(max_length=150)
-    sex = serializers.CharField(max_length=150)
+    sex = serializers.CharField(max_length=150, required=False)
+    number = serializers.CharField(max_length=150, required=False)
 
     # 有外键时，不显示为id，显示外键信息，需定义外键serializers，即ForKeySerializer，以下为举例
     # for_key = ForKeySerializer()
     class Meta:
         model = Student
         fields = "__all__"
+
+    def validate_name(self, name):
+        if len(name) > 10:
+            raise serializers.ValidationError("名称过长")
+        if Student.objects.filter(name=name).count():
+            raise serializers.ValidationError("名称已存在")
+        return name

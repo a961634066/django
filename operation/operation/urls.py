@@ -13,20 +13,22 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+import patterns as patterns
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
 from appss.pruduct.views import TaskView, CacheView, LogView, ModelsView, Students, StudentsMixinGenerics, PdfView, \
-    ExcelView
+    ExcelView, get_info
 
-from appss.pruduct.views import StudentsViewsets
+from appss.pruduct.views import StudentsViewsets, NewStudents
 
 router = DefaultRouter()
 
 # 配置students的url
-router.register(r'students', StudentsViewsets)
+router.register(r'students', StudentsViewsets, basename="test")
+router.register(r'delete', NewStudents, basename="delete")
 
 test_patterns = [
     url(r'test/$', TaskView.as_view()),
@@ -48,13 +50,15 @@ urlpatterns = [
 
     # genricAPIView的路由
     url(r'^gen/', include(genric_patterns)),
+    url(r'^info/', get_info),
 
     # drf文档，安装coreapi包，$符号一定不要
     url(r'^doc/', include_docs_urls(title='bbb')),
 
 
     # router的配置
-    url(r'^', include(router.urls))
+    url(r'^', include(router.urls)),
+
 ]
 
 # 两种方式，include或下面

@@ -12,6 +12,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.core.cache import cache
 from django.http import JsonResponse, HttpResponse, FileResponse
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
@@ -19,8 +20,14 @@ from rest_framework.views import APIView
 
 from appss.pruduct.models import Test, Teacher, Student
 from appss.pruduct.serializers import TestSerializers, StudetSerializer
+from operation.utils import get_method
 
 log = logging.getLogger("pruduct")
+
+@api_view(["get"])
+@get_method("get")
+def get_info(request):
+    return Response({"name": "admin", "password": "123456"})
 
 class TaskView(APIView):
 
@@ -167,13 +174,31 @@ class StudentsMixinGenerics(mixins.ListModelMixin, generics.GenericAPIView):
 
 # viewsets 方式
 # 与roter绑定使用，配置url
-class StudentsViewsets(mixins.ListModelMixin, viewsets.GenericViewSet):
+class StudentsViewsets(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Student.objects.all()
     serializer_class = StudetSerializer
-    pagination_class = StudentPaginator
 
-    def get(self, request):
-        return self.list(request)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)    # raise_exception是否抛出异常，一般都是true
+        print(serializer.is_valid(raise_exception=True))
+        # 以下为逻辑段
+        if "flag" in request.data:
+            self.perform_create(serializer)
+            return Response("保存成功", status=status.HTTP_201_CREATED)
+        else:
+            return Response("保存失败", status=status.HTTP_400_BAD_REQUEST)
+
+class NewStudents(mixins.DestroyModelMixin, viewsets.GenericViewSet):
+
+    queryset = Student.objects.all()
+    serializer_class = StudetSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 from reportlab.pdfgen import canvas

@@ -177,6 +177,17 @@ class Email():
         # 发送邮件
         yag.send('receiver@qq.com','subject', contents)
 
+def get_method(method):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            if method == "get" or "GET":
+                print("GET请求")
+            else:
+                print("not know method")
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
 if __name__ == '__main__':
     resp = TestAccessor().test()
     Utils.captcha()
