@@ -12,13 +12,13 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.core.cache import cache
 from django.http import JsonResponse, HttpResponse, FileResponse
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from rest_framework.views import APIView
 
-from appss.pruduct.models import Test, Teacher, Student
+from appss.pruduct.models import Test, Teacher, Student, Subject
 from appss.pruduct.serializers import TestSerializers, StudetSerializer
 from operation.utils import get_method
 
@@ -189,10 +189,12 @@ class StudentsViewsets(mixins.CreateModelMixin, viewsets.GenericViewSet):
         else:
             return Response("保存失败", status=status.HTTP_400_BAD_REQUEST)
 
-class NewStudents(mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class NewStudents(mixins.DestroyModelMixin, viewsets.GenericViewSet,
+                  mixins.UpdateModelMixin):
 
     queryset = Student.objects.all()
     serializer_class = StudetSerializer
+    lookup_field = "id"
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

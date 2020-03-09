@@ -12,15 +12,17 @@ SerializerMethodField:某个字段不属于指定model，它是read_only，只�
 
 """
 
+
 class TestSerializers(serializers.ModelSerializer):
-    name = serializers.CharField(max_length=20,min_length=3,required=True,error_messages={
-        "max_length":"名字长度不能大于20",
-        "min_length":"名字长度不能小于3",
-        "required":"请填写名称",
+    name = serializers.CharField(max_length=20, min_length=3, required=True, error_messages={
+        "max_length": "名字长度不能大于20",
+        "min_length": "名字长度不能小于3",
+        "required": "请填写名称",
     })
     age = serializers.IntegerField(required=True)
     sex = serializers.CharField()
     date_method = serializers.SerializerMethodField()
+
     # date_method1 = serializers.DateTimeField(format='%Y-%m-%d %H:%M')    格式化日期
 
     class Meta:
@@ -29,13 +31,11 @@ class TestSerializers(serializers.ModelSerializer):
         # fields = '__all__': 表示所有字段
         # exclude = ('add_time',):  除去指定的某些字段
 
-
     def get_date_method(self, obj):
         """
         命名：get + 字段名
         """
         return time.time() - 7 * 60
-
 
     def validate_age(self, age):
         """
@@ -51,8 +51,7 @@ class TestSerializers(serializers.ModelSerializer):
 
 
 class StudetSerializer(serializers.ModelSerializer):
-
-    name = serializers.CharField(max_length=150)
+    name = serializers.CharField(max_length=150, required=False)
     sex = serializers.CharField(max_length=150, required=False)
     number = serializers.CharField(max_length=150, required=False)
 

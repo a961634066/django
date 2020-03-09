@@ -1,8 +1,13 @@
 # -*- coding:utf-8 -*-
 import json
+import logging
+import logging.handlers
+import os
 import random
 import socket
 import string
+from functools import wraps
+
 import requests
 import yaml
 import xmltodict
@@ -13,7 +18,11 @@ from operation.constant import YAML
 
 # python3 去掉控制台requests请求https时verify=False告警
 import urllib3
+
+# from operation.settings import BASE_DIR
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 # python2
 # from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -61,6 +70,7 @@ class SocketObject(object):
         # msg, addr = s.recvfrom(2048)
         return s
 
+
 # 基类
 class Manager(object):
 
@@ -89,22 +99,17 @@ class TestAccessor(Manager):
         print(resp)
 
 
-
-
 class RequestClient(object):
 
     def __init__(self, host, port, scheme):
         "http://host:port/version/url"
         self.url = "{0}://{1}:{2}/".format(scheme, host, port)
 
-
     def requests(self, method, url, **kwargs):
         url = self.url + url
         print(method)
         print(url)
         return requests.Session().request(method, "https://www.baidu.com", verify=False, **kwargs)
-
-
 
 
 class ConfigManager(object):
@@ -162,33 +167,75 @@ class Utils(object):
         for i in range(4):
             chars += random.choice([random_lower, random_upper, random_num])
         image = ImageCaptcha().generate_image(chars)
-        image.save("./%s.jpg" % chars)   # 保存
+        image.save("./%s.jpg" % chars)  # 保存
         # return image.show()   # 展示出来
+
 
 class Email():
     def send_mail(self):
         import yagmail  # 第三方库
 
         # 链接邮箱服务器
-        yag = yagmail.SMTP(user="sender@126.com", password="126邮箱授权码", host='smtp.126.com')
+        yag = yagmail.SMTP(user="961634066@qq.com", password="svjwbnnqmxvtbcga", host='smtp.qq.com')
         # 邮箱正文
         contents = ['This is the body, and here is just text http://somedomain/image.png',
                     'You can find an audio file attached.', '/local/path/song.mp3']
         # 发送邮件
-        yag.send('receiver@qq.com','subject', contents)
+        yag.send('18524445949@163.com', 'subject', contents)
+        print("发送成功")
 
+
+# 装饰器
 def get_method(method):
     def decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
             if method == "get" or "GET":
                 print("GET请求")
             else:
                 print("not know method")
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
-if __name__ == '__main__':
-    resp = TestAccessor().test()
-    Utils.captcha()
 
+def getLogger(logFileName):
+    """
+    自己理解
+    :param logFileName:文件名即日志文件名
+    """
+    # 得到logger对象
+    logger = logging.getLogger(logFileName)
+    logger.setLevel(logging.DEBUG)
+    log_path = os.path.join("F:\liubo\liubo\local_git\django\operation", "log")
+    if not os.path.exists(log_path):
+        os.mkdir(log_path)
+    """
+    os.path.normpath()  规范化路径
+    参数when决定了时间间隔的类型，
+    参数interval决定了多少的时间间隔。如when=‘D’，interval=2，就是指两天的时间间隔，
+    backupCount决定了能留几个日志文件。超过数量就会丢弃掉老的日志文件。
+    """
+    print(os.path.join(log_path, logFileName))
+    lh = logging.handlers.TimedRotatingFileHandler(os.path.join(log_path, logFileName),
+                                                   when='D', interval=1, backupCount=1)
+    lh.suffix = "%Y-%m-%d"
+    lh.setLevel(logging.DEBUG)
+    ls = logging.StreamHandler()
+    ls.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        "%(asctime)s [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s] %(message)s")
+    lh.setFormatter(formatter)
+    ls.setFormatter(formatter)
+    logger.addHandler(lh)
+    logger.addHandler(ls)
+    return logger
+
+
+if __name__ == '__main__':
+    # resp = TestAccessor().test()
+    # Utils.captcha()
+    log = getLogger("utils.log")
+    log.info(123)
