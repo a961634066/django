@@ -4,6 +4,7 @@ import logging
 import logging.handlers
 import os
 import random
+import re
 import socket
 import string
 from functools import wraps
@@ -94,9 +95,9 @@ class TestAccessor(Manager):
         Manager.__init__(self, filepath=YAML)
 
     def test(self):
-        url = "index/test"
+        url = "info"
         resp = self.request.requests(self.get, url)
-        print(resp)
+        print(resp.json())
 
 
 class RequestClient(object):
@@ -109,7 +110,7 @@ class RequestClient(object):
         url = self.url + url
         print(method)
         print(url)
-        return requests.Session().request(method, "https://www.baidu.com", verify=False, **kwargs)
+        return requests.Session().request(method, url, verify=False, **kwargs)
 
 
 class ConfigManager(object):
@@ -170,13 +171,60 @@ class Utils(object):
         image.save("./%s.jpg" % chars)  # 保存
         # return image.show()   # 展示出来
 
+    @staticmethod
+    def is_ipv4(ip_str):
+        """
+        判断ipv4
+        :param ip_str: ip字符串
+        :return: boolean
+        """
+        p = re.compile('^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$')
+        if p.match(ip_str):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def is_ipv6(ip_addr):
+        """
+        判断ipv6
+        :param ip_str: ip字符串
+        :return: boolean
+        """
+        if ip_addr == '::':
+            return True
+        chuck_list = ip_addr.split(':')
+        if len(chuck_list) > 8:
+            print(1)
+            return False
+        __count = 0
+        for seg in chuck_list:
+            if seg == '':
+                __count += 1
+        if ip_addr.endswith('::') or ip_addr.startswith('::'):
+            if __count > 2:
+                print(2)
+                return False
+        else:
+            if __count > 1:
+                print(3)
+                return False
+        match = r'^[0-9A-Fa-f]{1,4}$'
+        for item in chuck_list:
+            if item == '':
+                continue
+            print(item)
+            if re.match(match, item) is None:
+                print(4)
+                return False
+        return True
 
 class Email():
     def send_mail(self):
         import yagmail  # 第三方库
 
         # 链接邮箱服务器
-        yag = yagmail.SMTP(user="961634066@qq.com", password="svjwbnnqmxvtbcga", host='smtp.qq.com')
+        yag = yagmail.SMTP(user="9616****@qq.com", password="****", host='smtp.qq.com')
         # 邮箱正文
         contents = ['This is the body, and here is just text http://somedomain/image.png',
                     'You can find an audio file attached.', '/local/path/song.mp3']
@@ -237,5 +285,6 @@ def getLogger(logFileName):
 if __name__ == '__main__':
     # resp = TestAccessor().test()
     # Utils.captcha()
+    print(Utils.is_ipv6(""))
     log = getLogger("utils.log")
     log.info(123)
