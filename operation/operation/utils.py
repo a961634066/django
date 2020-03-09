@@ -219,6 +219,7 @@ class Utils(object):
                 return False
         return True
 
+
 class Email():
     def send_mail(self):
         import yagmail  # 第三方库
@@ -231,6 +232,23 @@ class Email():
         # 发送邮件
         yag.send('18524445949@163.com', 'subject', contents)
         print("发送成功")
+
+
+class GetMethod():
+    # 有参时加__init__
+    def __init__(self, params):
+        self.params = params
+
+    def __call__(self, func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                print(func.__name__)
+                a,b = args[0],args[1]
+                return a + b + 10
+            except Exception as e:
+                return e
+        return wrapper
 
 
 # 装饰器
@@ -282,9 +300,14 @@ def getLogger(logFileName):
     return logger
 
 
+@GetMethod("params")
+def test(a,b):
+    return a + b
+
 if __name__ == '__main__':
     # resp = TestAccessor().test()
     # Utils.captcha()
     print(Utils.is_ipv6(""))
     log = getLogger("utils.log")
     log.info(123)
+    print(test(1,2))
