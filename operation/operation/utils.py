@@ -10,6 +10,8 @@ import string
 from functools import wraps
 
 import requests
+import xlrd as xlrd
+import xlwt as xlwt
 import yaml
 import xmltodict
 
@@ -30,7 +32,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # # 禁用安全请求警告
 # requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-
+# 通信类
 class SocketObject(object):
 
     def __init__(self, host="127.0.0.1", port=8443):
@@ -113,6 +115,7 @@ class RequestClient(object):
         return requests.Session().request(method, url, verify=False, **kwargs)
 
 
+# 配置获取类
 class ConfigManager(object):
 
     @staticmethod
@@ -147,6 +150,7 @@ class ConfigManager(object):
         return xmltodict.parse(read)
 
 
+# 基本工具类
 class Utils(object):
 
     @staticmethod
@@ -220,6 +224,7 @@ class Utils(object):
         return True
 
 
+# 邮件类
 class Email():
     def send_mail(self):
         import yagmail  # 第三方库
@@ -234,6 +239,7 @@ class Email():
         print("发送成功")
 
 
+# 装饰类
 class GetMethod():
     # 有参时加__init__
     def __init__(self, params):
@@ -244,11 +250,54 @@ class GetMethod():
         def wrapper(*args, **kwargs):
             try:
                 print(func.__name__)
-                a,b = args[0],args[1]
+                a, b = args[0], args[1]
                 return a + b + 10
             except Exception as e:
                 return e
+
         return wrapper
+
+
+# Excel读写类
+class ExcelUtils():
+    def __init__(self, *args, **kwargs):
+        self.coding = kwargs.get("coding", "utf-8")
+        self.max_size = kwargs.get("max_size", 1024)
+
+    def write(self, table_name="", fields=None, data=None):
+        # 校验
+        if not all([fields, data, table_name]):
+            raise ValueError("fields and data and table_name is not None")
+        elif not (isinstance(fields, tuple) or isinstance(fields, list)):
+            raise TypeError("fields format error, must list or tuple")
+        elif not (isinstance(data, tuple) or isinstance(data, list)):
+            raise TypeError("data format error, must list or tuple")
+        elif not (isinstance(data[0], tuple) or isinstance(data[0], list)):
+            raise TypeError("data format error, must two-dimension list or tuple")
+        # 写入
+        workbook = xlwt.Workbook(encoding=self.coding)
+        sheet = workbook.add_sheet(table_name)
+        data.insert(0, list(fields))
+        rows = len(data)
+        cols = len(fields)
+
+        for row in range(rows):
+            for col in range(cols):
+                sheet.write(row, col, data[row][col])
+        save_path = os.path.join(r"F:\liubo\liubo\local_git\django\operation\static\fiel", table_name)
+        workbook.save(save_path)
+
+    def read(self, path, sheet_index=0):
+        if not path:
+            raise ValueError("read path is not null")
+        workbook = xlrd.open_workbook(filename=path)
+        sheet = workbook.sheet_by_index(sheet_index)
+        nrows = sheet.nrows
+        data_list = []
+        for index in range(1, nrows):
+            row_data = sheet.row_values(index)
+            data_list.append(row_data)
+        return data_list
 
 
 # 装饰器
@@ -267,6 +316,7 @@ def get_method(method):
     return decorator
 
 
+# 日志
 def getLogger(logFileName):
     """
     自己理解
@@ -300,14 +350,15 @@ def getLogger(logFileName):
     return logger
 
 
-@GetMethod("params")
-def test(a,b):
-    return a + b
-
 if __name__ == '__main__':
     # resp = TestAccessor().test()
     # Utils.captcha()
-    print(Utils.is_ipv6(""))
+    # print(Utils.is_ipv6(""))
     log = getLogger("utils.log")
     log.info(123)
-    print(test(1,2))
+    fields = ("编号", "种族", "姓名", "技能", "性别")
+    data = [[1, "神族", "神眼", "空识界神力", "男"],
+            [2, "冥族", "逆天而行", "命器", "男"],
+            [3, "人族", "武庚", "练气，无色界神力", "男"]]
+    ExcelUtils().write(table_name="新建XLSX文件.xlsx",fields=fields, data=data)
+    # print(ExcelUtils().read(os.path.join(r"F:\liubo\liubo\local_git\django\operation\static\fiel", "新建XLSX文件.xlsx")))

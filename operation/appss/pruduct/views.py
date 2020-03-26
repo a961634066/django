@@ -27,7 +27,7 @@ log = logging.getLogger("pruduct")
 @api_view(["get"])
 @get_method("get")
 def get_info(request):
-    return Response({"name": "admin", "password": "123456"})
+    return Response({"name": "admin", "password": "123456"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class TaskView(APIView):
 
