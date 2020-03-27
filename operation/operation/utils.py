@@ -7,6 +7,9 @@ import random
 import re
 import socket
 import string
+
+import qrcode
+import urllib3
 from functools import wraps
 
 import requests
@@ -17,13 +20,16 @@ import xmltodict
 
 from configparser import ConfigParser
 
+from PIL import Image
+
 from operation.constant import YAML
 
-# python3 去掉控制台requests请求https时verify=False告警
-import urllib3
+"""
+文件内容：通信类、配置获取类、请求封装类、基本工具类、邮件类、装饰类、Excel读写类、装饰器、日志配置
+"""
 
 # from operation.settings import BASE_DIR
-
+# python3 去掉控制台requests请求https时verify=False告警
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -316,7 +322,7 @@ def get_method(method):
     return decorator
 
 
-# 日志
+# 日志配置
 def getLogger(logFileName):
     """
     自己理解
@@ -350,6 +356,81 @@ def getLogger(logFileName):
     return logger
 
 
+# 二维码类
+class Qrcode():
+    def __init__(self, data):
+        self.data = data
+
+    # 简单生成，调用qrcode的make()方法传入url或者想要展示的内容
+    def simple_qrcode(self):
+        img = qrcode.make('https://www.cnblogs.com/linjiqin/p/4140455.html')
+        img.save(r"F:\liubo\liubo\local_git\django\operation\static\image\text.png")
+
+    """
+    高级使用
+    version: 一个整数，范围为1到40，表示二维码的大小（最小值是1，是个12×12的矩阵），
+    如果想让程序自动生成，将值设置为 None 并使用 fit=True 参数即可。
+    error_correction: 二维码的纠错范围，可以选择4个常量：
+        ··1. ERROR_CORRECT_L 7%以下的错误会被纠正
+        ··2. ERROR_CORRECT_M (default) 15%以下的错误会被纠正
+        ··3. ERROR_CORRECT_Q 25 %以下的错误会被纠正
+        ··4. ERROR_CORRECT_H. 30%以下的错误会被纠正
+    boxsize: 每个点（方块）中的像素个数
+    border: 二维码距图像外围边框距离，默认为4，而且相关规定最小为4
+    """
+    def mid_qrcode(self):
+        # 创建对象
+        qr = qrcode.QRCode(version=1, error_correction=qrcode.ERROR_CORRECT_H)
+        # 传入参数
+        qr.add_data("啦啦啦啦啦啦，你看到我了吗")
+        qr.make()
+        # 生成二维码
+        img = qr.make_image()
+        # 保存二维码
+        img.save(r"F:\liubo\liubo\local_git\django\operation\static\image\text.png")
+        # img.show()
+
+    """
+    往往我们看到的二维码中间都有一张图片或者用户头像，如何才能生成这样一张二维码？
+    利用PIL库中image模块的paste函数img.paste(path,where,mask=None)
+    其中，img为image对象；path为所添加图片；where为tuple,如：(x,y)，表示图片所在二维码的横纵坐标
+    """
+    def high_qrcode(self):
+        qr = qrcode.QRCode(version=1, error_correction=qrcode.ERROR_CORRECT_H)
+        qr.add_data(self.data)
+        qr.make()
+        img = qr.make_image(fill_color="green", back_color="white")
+
+        # 添加logo，打开logo照片
+        icon = Image.open(r"C:\Users\wangshuai\Desktop\1.jpg")
+        # 获取图片的宽高
+        img_w, img_h = img.size
+        # 参数设置logo的大小
+        factor = 6
+        size_w = int(img_w / factor)
+        size_h = int(img_h / factor)
+        icon_w, icon_h = icon.size
+        if icon_w > size_w:
+            icon_w = size_w
+        if icon_h > size_h:
+            icon_h = size_h
+        # 重新设置logo的尺寸
+        icon = icon.resize((icon_w, icon_h), Image.ANTIALIAS)
+        # 得到画图的x，y坐标，居中显示
+        w = int((img_w - icon_w) / 2)
+        h = int((img_h - icon_h) / 2)
+        # 黏贴logo照
+        img.paste(icon, (w, h), mask=None)
+        # 终端显示图片
+        # import matplotlib.pyplot as plt
+        # plt.imshow(img)
+        # plt.show()
+        # 保存img
+        img.save(r"F:\liubo\liubo\local_git\django\operation\static\image\text.png")
+        return img
+
+
+
 if __name__ == '__main__':
     # resp = TestAccessor().test()
     # Utils.captcha()
@@ -360,5 +441,7 @@ if __name__ == '__main__':
     data = [[1, "神族", "神眼", "空识界神力", "男"],
             [2, "冥族", "逆天而行", "命器", "男"],
             [3, "人族", "武庚", "练气，无色界神力", "男"]]
-    ExcelUtils().write(table_name="新建XLSX文件.xlsx",fields=fields, data=data)
+    # ExcelUtils().write(table_name="新建XLSX文件.xlsx", fields=fields, data=data)
     # print(ExcelUtils().read(os.path.join(r"F:\liubo\liubo\local_git\django\operation\static\fiel", "新建XLSX文件.xlsx")))
+    Qrcode("世情薄，人情恶，雨送黄昏花易落。晓风干，泪痕残，欲笺心事，独语斜阑。"
+              "难，难，难！人成各，今非昨，病魂常似秋千索。角声寒，夜阑珊，怕人寻问，咽泪装欢。瞒，瞒，瞒！").high_qrcode()
