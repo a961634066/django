@@ -399,10 +399,12 @@ class Qrcode():
         qr = qrcode.QRCode(version=1, error_correction=qrcode.ERROR_CORRECT_H)
         qr.add_data(self.data)
         qr.make()
-        img = qr.make_image(fill_color="green", back_color="white")
+        # img = qr.make_image(fill_color="green", back_color="white")
+        # 黑白色填配时，必须使用rgb，不然把logo颜色也会改变
+        img = qr.make_image(fill_color="#000", back_color="#FFF")
 
         # 添加logo，打开logo照片
-        icon = Image.open(r"C:\Users\wangshuai\Desktop\1.jpg")
+        icon = Image.open(r"C:\Users\wangshuai\Desktop\2.jpg")
         # 获取图片的宽高
         img_w, img_h = img.size
         # 参数设置logo的大小
