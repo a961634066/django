@@ -404,7 +404,7 @@ class Qrcode():
         img = qr.make_image(fill_color="#000", back_color="#FFF")
 
         # 添加logo，打开logo照片
-        icon = Image.open(r"C:\Users\wangshuai\Desktop\2.jpg")
+        icon = Image.open(r"C:\Users\wangshuai\Desktop\3.jpg")
         # 获取图片的宽高
         img_w, img_h = img.size
         # 参数设置logo的大小
@@ -445,5 +445,4 @@ if __name__ == '__main__':
             [3, "人族", "武庚", "练气，无色界神力", "男"]]
     # ExcelUtils().write(table_name="新建XLSX文件.xlsx", fields=fields, data=data)
     # print(ExcelUtils().read(os.path.join(r"F:\liubo\liubo\local_git\django\operation\static\fiel", "新建XLSX文件.xlsx")))
-    Qrcode("世情薄，人情恶，雨送黄昏花易落。晓风干，泪痕残，欲笺心事，独语斜阑。"
-              "难，难，难！人成各，今非昨，病魂常似秋千索。角声寒，夜阑珊，怕人寻问，咽泪装欢。瞒，瞒，瞒！").high_qrcode()
+    Qrcode("https://www.baidu.com/").high_qrcode()

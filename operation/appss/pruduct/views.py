@@ -7,6 +7,7 @@ import logging
 import sys
 from io import BytesIO
 
+import ipaddr as ipaddr
 import redis
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.cache import cache
@@ -121,7 +122,46 @@ class VerifierView(APIView):
 
     def get(self, request):
 
-        return JsonResponse(data={})
+        print(request.headers)
+        print(request.META)
+        print(request.build_absolute_uri())
+        print(request.build_absolute_uri("server"))
+        print(request.build_absolute_uri("http://10.65.5.157"))
+        print(request.get_full_path_info())
+        print(request.get_full_path())
+        print(request.get_port())
+        ip1 = "10.10.0.5"
+        ip2 = "10.10.0.0/24"
+
+        ip = ipaddr.IPAddress(ip1)       # 单个ipv4地址对象建立
+        ip4 = ipaddr.IPv4Network(ip2)     # ipv4网段对象建立
+        # ip6 = ipaddr.IPv6Network()     # ipv6网段对象建立
+        ipd = ipaddr.IPNetwork(ip2)
+        print(type(ip))          # IPAddress类型
+        print(type(ip4))         # IPv4Network
+        print(type(ipd))         # IPNetwork
+        # 广播地址
+        print(ip4.broadcast)     # 10.10.0.255
+        # 掩码
+        print(ip4.hostmask)      # 0.0.0.255
+        # ip数量
+        print(ip4.numhosts)      # 256
+        # 创建一个网段中一个IP地址列表的迭代器对象
+        print(ip4.iterhosts())
+        # ip的字符串列表
+        print([v.__str__() for v in ip4.iterhosts()])   # ["10.10.0.0","10.10.0.1]
+        # 网段中是否包含某个ip或网段，此ip要是addr对象，不是字符串
+        print(ip4.Contains(ip))
+        print(ip4.Contains(ip4))
+        # 是否是内网地址
+        print(ip.is_private)
+        # 是否是loop地址
+        print(ip.is_loopback)
+        # ip对象转为数值
+        print(ip.__int__())
+
+
+        return JsonResponse(data={"a": 1, "b": 2}, safe=False)
 
 # 最底层，APIView继承
 from django.views.generic.base import View

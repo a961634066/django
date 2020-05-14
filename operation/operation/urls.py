@@ -20,7 +20,7 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
 from appss.pruduct.views import TaskView, CacheView, LogView, ModelsView, Students, StudentsMixinGenerics, PdfView, \
-    ExcelView, get_info
+    ExcelView, get_info, VerifierView
 
 from appss.pruduct.views import StudentsViewsets, NewStudents
 
@@ -47,6 +47,7 @@ genric_patterns = [
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^index/',include(test_patterns)),
+    url(r'^ver/',VerifierView.as_view()),
 
     # genricAPIView的路由
     url(r'^gen/', include(genric_patterns)),

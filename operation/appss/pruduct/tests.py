@@ -6,6 +6,7 @@ import json
 from copy import copy
 
 import six as six
+import xlrd
 from django.test import TestCase
 
 # Create your tests here.
