@@ -3,7 +3,7 @@ import patterns
 from django.conf.urls import url
 from django.urls import path, re_path
 
-from appss.include_test.views import FirstView, SecondView, ThrerView
+from appss.include_test.views import FirstView, SecondView, ThrerView, FourView
 
 urlpatterns = [
     # django1.x使用
@@ -17,5 +17,6 @@ urlpatterns = [
     # 自定义一些正则条件
     re_path("second/(\w+)/(?P<id>[0-9]{2})/", SecondView.as_view()),
 
-    path("three/", ThrerView.as_view())
+    path("three/", ThrerView.as_view()),
+    path("four/", FourView.as_view()),
 ]

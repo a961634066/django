@@ -18,7 +18,7 @@ class request_middlewear(MiddlewareMixin):
         request.session["user"] = "liubo"
         s = request.session._session_cache
         print("中间件session:{}".format(s))
-        return JsonResponse({"status": 200, "message": "请求中间件就返回了"})
+        # return JsonResponse({"status": 200, "message": "请求中间件就返回了"})
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         print("视图函数中间件")
@@ -29,8 +29,8 @@ class request_middlewear(MiddlewareMixin):
 
     def process_exception(self, request, exception):
         print("异常中间件")
-        response = JsonResponse({"status": 500, "message": "错了错了错了"})
-        return response
+        # response = JsonResponse({"status": 500, "message": "错了错了错了"})
+        return None
 
     def process_response(self, request, response):
         print("响应中间件")
