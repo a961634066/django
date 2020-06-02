@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'appss.pruduct',
     "djcelery",
     "rest_framework",
-    "appss.aplay"
+    "appss.aplay",
+    "appss.include_test"
 ]
 
 MIDDLEWARE = [

@@ -60,7 +60,12 @@ urlpatterns = [
     # router的配置
     url(r'^', include(router.urls)),
 
+    # apliay支付订单
     url(r'^order/', include("appss.aplay.urls")),
+
+
+    # include测试,两种取参方式，路由正则
+    url(r'^include/', include("appss.include_test.urls"))
 
 ]
 
