@@ -1,6 +1,7 @@
 #! -*- coding:utf-8 -*-
 import json
 
+from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -30,4 +31,6 @@ class SecondView(APIView):
 
 class ThrerView(APIView):
     def get(self, request):
-        return ""
+        a = int("10.12")
+        print(a)
+        return HttpResponse("dilidilidildildidldidldidldili")
