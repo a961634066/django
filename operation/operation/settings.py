@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'appss.pruduct',
     "djcelery",
-    "rest_framework"
+    "rest_framework",
+    "appss.aplay"
 ]
 
 MIDDLEWARE = [

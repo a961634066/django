@@ -16,6 +16,7 @@ Including another URLconf
 import patterns as patterns
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import path
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
@@ -56,9 +57,10 @@ urlpatterns = [
     # drf文档，安装coreapi包，$符号一定不要
     url(r'^doc/', include_docs_urls(title='bbb')),
 
-
     # router的配置
     url(r'^', include(router.urls)),
+
+    url(r'^order/', include("appss.aplay.urls")),
 
 ]
 
