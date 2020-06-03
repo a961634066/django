@@ -25,7 +25,7 @@ class request_middlewear(MiddlewareMixin):
         return None
 
     def process_template_response(self, request, response):
-        return None
+        return response
 
     def process_exception(self, request, exception):
         print("异常中间件")

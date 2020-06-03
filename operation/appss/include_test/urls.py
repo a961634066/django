@@ -3,7 +3,7 @@ import patterns
 from django.conf.urls import url
 from django.urls import path, re_path
 
-from appss.include_test.views import FirstView, SecondView, ThrerView, FourView
+from appss.include_test.views import FirstView, SecondView, ThrerView, FourView, FiveView
 
 urlpatterns = [
     # django1.x使用
@@ -19,4 +19,5 @@ urlpatterns = [
 
     path("three/", ThrerView.as_view()),
     path("four/", FourView.as_view()),
+    path("five/", FiveView.as_view()),
 ]

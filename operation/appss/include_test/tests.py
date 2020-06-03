@@ -1,8 +1,14 @@
 import os
 
+# 脚本中调用django环境
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "operation.settings")
+import django
+
+django.setup()
 from django.test import TestCase
 
 # Create your tests here.
+from appss.include_test.models import Shopping
 
 
 def os_test():
@@ -18,4 +24,6 @@ def os_test():
 
 
 if __name__ == '__main__':
+    aa = Shopping.objects.all().values()
+    print(aa)
     os_test()
