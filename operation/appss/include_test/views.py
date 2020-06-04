@@ -10,6 +10,7 @@ from django.http import HttpResponse, FileResponse
 from django.shortcuts import render
 
 # Create your views here.
+from django.views.decorators.csrf import csrf_protect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -75,6 +76,7 @@ class FourView(APIView):
 
 class FiveView(APIView):
     # orm 聚合函数
+    # @csrf_protect  验证csrf
     def get(self, request):
         # id=xxx 返回响应命名,默认{'id__max': 6}，{'id': 6},可传多个参数
         max_id = Shopping.objects.aggregate(id=Max("id"), price=Max("price"))
@@ -99,3 +101,19 @@ class FiveView(APIView):
         cursor.execute("select id, name, avg(price) as avg from include_shop group by name")
         group_by = cursor.fetchall()
         return Response({"max_id": max_id, "group": s.data})
+
+    def post(self, request):
+        data = request.data
+        print(request.FILES.get("upload"))
+        upload = request.FILES.get("upload")
+        print(upload.file)
+        with open("aaa.json", "wb") as w:
+            for v in upload.chunks():
+                w.write(v)
+        print(upload.name)
+        ser = ShopSerializer(data=data)
+        if ser.is_valid(raise_exception=True):
+            ser.save()
+            return Response({"status": 0})
+        return Response({"status": 400})
+

@@ -7,6 +7,9 @@ from appss.include_test.models import Shopping
 class ShopSerializer(serializers.ModelSerializer):
 
     avg = serializers.SerializerMethodField()
+    name = serializers.CharField(max_length=20)
+    price = serializers.IntegerField(max_value=100)
+    num = serializers.IntegerField(max_value=10000)
 
 
     class Meta:
