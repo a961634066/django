@@ -176,7 +176,7 @@ class Utils(object):
 
         chars = ''
         for i in range(4):
-            chars += random.choice([random_lower, random_upper, random_num])
+            chars += random.choice([random_lower, ranom_upper, random_num])
         image = ImageCaptcha().generate_image(chars)
         image.save("./%s.jpg" % chars)  # 保存
         # return image.show()   # 展示出来
