@@ -378,6 +378,7 @@ class Qrcode():
     boxsize: 每个点（方块）中的像素个数
     border: 二维码距图像外围边框距离，默认为4，而且相关规定最小为4
     """
+
     def mid_qrcode(self):
         # 创建对象
         qr = qrcode.QRCode(version=1, error_correction=qrcode.ERROR_CORRECT_H)
@@ -395,6 +396,7 @@ class Qrcode():
     利用PIL库中image模块的paste函数img.paste(path,where,mask=None)
     其中，img为image对象；path为所添加图片；where为tuple,如：(x,y)，表示图片所在二维码的横纵坐标
     """
+
     def high_qrcode(self):
         qr = qrcode.QRCode(version=1, error_correction=qrcode.ERROR_CORRECT_H)
         qr.add_data(self.data)
@@ -432,17 +434,45 @@ class Qrcode():
         return img
 
 
+def func() -> None: ...
+
+def send_code(content, phone):
+    url = "http://106.ihuyi.com/webservice/sms.php?method=Submit"
+    params = {
+        "account": "",
+        "password": "",
+        "mobile": phone,
+        "content": content,
+        "format": "json",
+    }
+    resp = requests.get(url, params)
+    print(resp.status_code)
+    print(resp.text)
 
 if __name__ == '__main__':
     # resp = TestAccessor().test()
     # Utils.captcha()
     # print(Utils.is_ipv6(""))
-    log = getLogger("utils.log")
-    log.info(123)
-    fields = ("编号", "种族", "姓名", "技能", "性别")
-    data = [[1, "神族", "神眼", "空识界神力", "男"],
-            [2, "冥族", "逆天而行", "命器", "男"],
-            [3, "人族", "武庚", "练气，无色界神力", "男"]]
-    # ExcelUtils().write(table_name="新建XLSX文件.xlsx", fields=fields, data=data)
-    # print(ExcelUtils().read(os.path.join(r"F:\liubo\liubo\local_git\django\operation\static\fiel", "新建XLSX文件.xlsx")))
-    Qrcode("https://www.baidu.com/").high_qrcode()
+    # log = getLogger("utils.log")
+    # log.info(123)
+    # fields = ("编号", "种族", "姓名", "技能", "性别")
+    # data = [[1, "神族", "神眼", "空识界神力", "男"],
+    #         [2, "冥族", "逆天而行", "命器", "男"],
+    #         [3, "人族", "武庚", "练气，无色界神力", "男"]]
+    # # ExcelUtils().write(table_name="新建XLSX文件.xlsx", fields=fields, data=data)
+    # # print(ExcelUtils().read(os.path.join(r"F:\liubo\liubo\local_git\django\operation\static\fiel", "新建XLSX文件.xlsx")))
+    # Qrcode("https://www.baidu.com/").high_qrcode()
+    # a = [9, 5, 3, 4, 7, 1]
+    # count = len(a)
+    #
+    # for index in range(count-1):
+    #     print(index)
+    #     for chil_index in range(count - index - 1):
+    #         if a[chil_index] > a[chil_index+1]:
+    #             temp = a[chil_index+1]
+    #             a[chil_index+1] = a[chil_index]
+    #             a[chil_index] = temp
+    #     print(a)
+    # func()
+    content = "您的验证码是：8421。请不要把验证码泄露给其他人。"
+    send_code(content, 13555555555)
