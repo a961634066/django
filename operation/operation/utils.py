@@ -290,7 +290,7 @@ class ExcelUtils():
         for row in range(rows):
             for col in range(cols):
                 sheet.write(row, col, data[row][col])
-        save_path = os.path.join(r"F:\liubo\liubo\local_git\django\operation\static\fiel", table_name)
+        save_path = os.path.join(r"xxxx\fiel", table_name)
         workbook.save(save_path)
 
     def read(self, path, sheet_index=0):
@@ -331,7 +331,7 @@ def getLogger(logFileName):
     # 得到logger对象
     logger = logging.getLogger(logFileName)
     logger.setLevel(logging.DEBUG)
-    log_path = os.path.join("F:\liubo\liubo\local_git\django\operation", "log")
+    log_path = os.path.join("xxxx\operation", "log")
     if not os.path.exists(log_path):
         os.mkdir(log_path)
     """
@@ -364,7 +364,7 @@ class Qrcode():
     # 简单生成，调用qrcode的make()方法传入url或者想要展示的内容
     def simple_qrcode(self):
         img = qrcode.make('https://www.cnblogs.com/linjiqin/p/4140455.html')
-        img.save(r"F:\liubo\liubo\local_git\django\operation\static\image\text.png")
+        img.save(r"xxxx\text.png")
 
     """
     高级使用
@@ -388,7 +388,7 @@ class Qrcode():
         # 生成二维码
         img = qr.make_image()
         # 保存二维码
-        img.save(r"F:\liubo\liubo\local_git\django\operation\static\image\text.png")
+        img.save(r"xxxx\text.png")
         # img.show()
 
     """
@@ -406,7 +406,7 @@ class Qrcode():
         img = qr.make_image(fill_color="#000", back_color="#FFF")
 
         # 添加logo，打开logo照片
-        icon = Image.open(r"C:\Users\wangshuai\Desktop\3.jpg")
+        icon = Image.open(r"xxxx\3.jpg")
         # 获取图片的宽高
         img_w, img_h = img.size
         # 参数设置logo的大小
@@ -430,7 +430,7 @@ class Qrcode():
         # plt.imshow(img)
         # plt.show()
         # 保存img
-        img.save(r"F:\liubo\liubo\local_git\django\operation\static\image\text.png")
+        img.save(r"xxxx\text.png")
         return img
 
 
