@@ -7,6 +7,10 @@ import random
 import re
 import socket
 import string
+import sys
+import time
+from optparse import OptionParser
+from tokenize import String
 
 import qrcode
 import urllib3
@@ -228,6 +232,22 @@ class Utils(object):
                 print(4)
                 return False
         return True
+
+    @staticmethod
+    def validateEmail(email):
+        """
+        邮件格式校验
+        :param email:
+        :return:
+        """
+        if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email) != None:
+            # if re.match("/^\w+@[a-z0-9]+\.[a-z]{2,4}$/", email) != None:
+            print('ok')
+            return True
+        else:
+            print('fail')
+            return False
+
 
 
 # 邮件类
@@ -459,8 +479,8 @@ if __name__ == '__main__':
     # data = [[1, "神族", "神眼", "空识界神力", "男"],
     #         [2, "冥族", "逆天而行", "命器", "男"],
     #         [3, "人族", "武庚", "练气，无色界神力", "男"]]
-    # # ExcelUtils().write(table_name="新建XLSX文件.xlsx", fields=fields, data=data)
-    # # print(ExcelUtils().read(os.path.join(r"F:\liubo\liubo\local_git\django\operation\static\fiel", "新建XLSX文件.xlsx")))
+    # ExcelUtils().write(table_name="新建XLSX文件.xlsx", fields=fields, data=data)
+    # print(ExcelUtils().read(os.path.join(r"F:\liubo\liubo\local_git\django\operation\static\fiel", "新建XLSX文件.xlsx")))
     # Qrcode("https://www.baidu.com/").high_qrcode()
     # a = [9, 5, 3, 4, 7, 1]
     # count = len(a)
@@ -474,5 +494,7 @@ if __name__ == '__main__':
     #             a[chil_index] = temp
     #     print(a)
     # func()
-    content = "您的验证码是：8421。请不要把验证码泄露给其他人。"
-    send_code(content, 13555555555)
+    # content = "您的验证码是：8421。请不要把验证码泄露给其他人。"
+    # send_code(content, 13555555555)
+    # main()
+    print(Utils.validateEmail('9616@qq.com'))
