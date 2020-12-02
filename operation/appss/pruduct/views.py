@@ -106,14 +106,16 @@ class CeleryView(APIView):
 class ModelsView(APIView):
 
     def get(self, request):
-        student = Student.objects.create(name="123", sex="女", number="456123")
-        techer = Teacher.objects.create(techer_name="www")
+        # student = Student.objects.create(name="123", sex="女", number="456123")
+        # techer = Teacher.objects.create(techer_name="www")
+        sql = Student.objects.filter(name="123").query  # 返回原始sql
+
         '''
         update_or_create: 更新或新建
         defaults: 新建参数
         **kwargs: 匹配字段
         '''
-        Teacher.objects.update_or_create(defaults={},techer_name="www")
+        # Teacher.objects.update_or_create(defaults={},techer_name="www")
 
         return JsonResponse(data={})
 

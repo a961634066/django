@@ -64,8 +64,8 @@ urlpatterns = [
     url(r'^order/', include("appss.aplay.urls")),
 
 
-    # include测试,两种取参方式，路由正则
-    url(r'^include/', include("appss.include_test.urls"))
+    url(r'^web/', include("appss.webserver.urls")),
+
 
 ]
 
