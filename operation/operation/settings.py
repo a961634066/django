@@ -88,8 +88,13 @@ WSGI_APPLICATION = 'operation.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 配置使用mysql
+         'ENGINE': 'django.db.backends.mysql',     # 数据库产品
+         'HOST': "localhost",           # 数据库ip
+         'PORT': 3306,                  # 数据库端口
+         'USER': "root",                # 用户名
+         'PASSWORD': "root",           # 密码
+         'NAME': "test",              # 数据库名
     }
 }
 
